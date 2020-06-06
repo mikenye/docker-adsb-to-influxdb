@@ -1,0 +1,22 @@
+#!/usr/bin/with-contenv bash
+#shellcheck shell=bash
+
+CONFIG_FILE="/etc/telegraf/telegraf.d/outputs_influxdb.conf"
+
+# Build telegraf config
+cat << EOF > ${CONFIG_FILE}
+[[outputs.influxdb]]
+EOF
+
+# Add InfluxDB URL
+echo -n 'urls = ["' >> ${CONFIG_FILE}
+echo -n "${INFLUXDBURL}" >> ${CONFIG_FILE}
+echo '"]' >> ${CONFIG_FILE}
+
+# Finish config
+cat << EOF >> ${CONFIG_FILE}
+  database = "adsb"
+  skip_database_creation = false
+  timeout = "5s"
+
+EOF
