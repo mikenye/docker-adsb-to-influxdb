@@ -50,6 +50,7 @@ RUN set -x && \
     apt-get install --no-install-recommends -y \
         ca-certificates \
         curl \
+        file \
         libncurses6 \
         gnupg \
         net-tools \
@@ -59,6 +60,7 @@ RUN set -x && \
     apt-get remove -y \
         ca-certificates \
         curl \
+        file \
         gnupg \
         && \
     apt-get autoremove -y && \
