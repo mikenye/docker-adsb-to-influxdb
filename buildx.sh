@@ -1,6 +1,8 @@
 #!/usr/bin/env sh
 #shellcheck shell=sh
 
+set -x
+
 REPO=mikenye
 IMAGE=adsb-to-influxdb
 PLATFORMS="linux/amd64,linux/arm/v7,linux/arm64"
