@@ -258,7 +258,7 @@ Messages from an ADS-B equipped "non-transponder" emitter e.g. a ground vehicle,
 
 A very simple visualisation would be to create a table showing recent squawks:
 
-![Example Grafana Visualisation of ADS-B Data](example_vis_grafana_table.png "Example Grafana Visualisation of ADS-B Data")
+![Example Grafana Visualisation of ADS-B Data](https://github.com/mikenye/docker-adsb-to-influxdb/raw/master/example_vis_grafana_table.png "Example Grafana Visualisation of ADS-B Data")
 
 The JSON for this panel is as follows:
 
