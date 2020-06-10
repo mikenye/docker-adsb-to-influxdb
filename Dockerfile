@@ -68,6 +68,7 @@ RUN set -x && \
     /usr/local/bin/telegraf --version >> /VERSIONS && \
     /usr/local/bin/readsb --version >> /VERSIONS && \
     echo "debian version $(cat /etc/debian_version)" >> /VERSIONS && \
+    date -I >> /BUILDDATE
     rm -rf /var/lib/apt/lists/* /src
 
 COPY /rootfs /
