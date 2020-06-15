@@ -107,6 +107,8 @@ There are a series of available variables you are required to set:
 | `MLATHOST` | | Optional. IP/hostname of an MLAT data source (Beast format). |
 | `MLATPORT` | `30105` | Optional. The TCP port to connect to on the MLAT data source for MLAT data. |
 | `INFLUXDBURL` | | Required. The URL of your InfluxDB instance, eg: `http://192.168.1.10:8086`. |
+| `INFLUXDBUSERNAME` | | Optional. If using InfluxDB authentication, this is the InfluxDB username. |
+| `INFLUXDBPASSWORD` | | Optional. If using InfluxDB authentication, this is the InfluxDB password. |
 | `INTERVAL` | `5` | Optional. The number of seconds between data being sent to InfluxDB for each tracked aircraft. Lowing this means more data being sent to InfluxDB and more system resources being used. |
 | `JSONPORT` | `30012` | Optional. The TCP port that `readsb` will listen to for incoming JSON connections. |
 | `TZ` | `UTC` | Optional.Your local timezone, eg `Australia/Perth`. |
