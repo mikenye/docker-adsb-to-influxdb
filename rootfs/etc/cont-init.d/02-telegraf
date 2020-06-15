@@ -21,9 +21,9 @@ cat << EOF >> ${CONFIG_FILE}
 EOF
 
 if [ ! -z "${INFLUXDBUSERNAME+x}" ]; then
-  echo "  username = \"${INFLUXDBUSERNAME}\""
+  echo "  username = \"${INFLUXDBUSERNAME}\"" >> ${CONFIG_FILE}
 fi
 
 if [ ! -z "${INFLUXDBPASSWORD+x}" ]; then
-  echo "  password = \"${INFLUXDBPASSWORD}\""
+  echo "  password = \"${INFLUXDBPASSWORD}\"" >> ${CONFIG_FILE}
 fi
