@@ -12,6 +12,19 @@ if [ -z "${ADSBHOST+x}" ]; then
   echo "ERROR: ADSBHOST environment variable not set"
   EXITCODE=1
 fi
+if [ -z "${INFLUXDB_USERNAME+x}" ]; then
+  if [ ! -z "${INFLUXDB_PASSWORD+x}" ]; then
+    echo "ERROR: Please also set environment variable INFLUXDB_USERNAME"
+    EXITCODE=1
+  fi
+fi
+if [ -z "${INFLUXDB_PASSWORD+x}" ]; then
+  if [ ! -z "${INFLUXDB_USERNAME+x}" ]; then
+    echo "ERROR: Please also set environment variable INFLUXDB_PASSWORD"
+    EXITCODE=1
+  fi
+fi
+
 echo -ne "\e[0m"
 if [ $EXITCODE -ne 0 ]; then
   exit 1
