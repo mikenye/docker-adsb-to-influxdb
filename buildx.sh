@@ -31,7 +31,7 @@ if [ -z $FORCEPUSH ]; then
 fi
 
 # If there are version differences, build & push with a tag matching the build date
-if [ $? -ne 0 ]; then
+if [ $DIFFEXITCODE -ne 0 ]; then
     docker buildx build -t "${REPO}/${IMAGE}:$(date -I)" --compress --push --platform "${PLATFORMS}" .
 else
   if [ -z $FORCEPUSH ]; then
