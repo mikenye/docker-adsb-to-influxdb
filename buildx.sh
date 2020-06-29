@@ -24,10 +24,21 @@ docker run --entrypoint cat "${REPO}/${IMAGE}:latest" > "/tmp/${IMAGE}.newlatest
 
 # Check for version differences
 diff "/tmp/${IMAGE}.oldlatest.VERSIONS" "/tmp/${IMAGE}.newlatest.VERSIONS" > /dev/null
+DIFFEXITCODE=$?
+
+if [ -z $FORCEPUSH ]; then
+    DIFFEXITCODE=1
+fi
 
 # If there are version differences, build & push with a tag matching the build date
 if [ $? -ne 0 ]; then
     docker buildx build -t "${REPO}/${IMAGE}:$(date -I)" --compress --push --platform "${PLATFORMS}" .
+else
+  if [ -z $FORCEPUSH ]; then
+    echo "No version changes, not building/pushing."
+    echo "To override, set FORCEPUSH=1."
+    echo ""
+  fi
 fi
 
 # Clean up
