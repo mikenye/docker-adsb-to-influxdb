@@ -30,7 +30,7 @@ RUN set -x && \
         && \
     git clone https://github.com/wiedehopf/readsb.git /src/readsb && \
     cd /src/readsb && \
-    make
+    make OPTIMIZE="-O3"
 
 FROM debian:stable-slim AS final
 
