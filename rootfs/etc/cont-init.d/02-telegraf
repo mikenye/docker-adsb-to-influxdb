@@ -18,5 +18,12 @@ cat << EOF >> ${CONFIG_FILE}
   database = "adsb"
   skip_database_creation = false
   timeout = "5s"
-
 EOF
+
+if [ ! -z "${INFLUXDBUSERNAME+x}" ]; then
+  echo "  username = \"${INFLUXDBUSERNAME}\"" >> ${CONFIG_FILE}
+fi
+
+if [ ! -z "${INFLUXDBPASSWORD+x}" ]; then
+  echo "  password = \"${INFLUXDBPASSWORD}\"" >> ${CONFIG_FILE}
+fi
