@@ -16,7 +16,7 @@ docker pull "${REPO}/${IMAGE}:latest"
 docker run --entrypoint cat "${REPO}/${IMAGE}:latest" > "/tmp/${IMAGE}.oldlatest.VERSIONS"
 
 # Build & push latest
-docker buildx build -t "${REPO}/${IMAGE}:latest" --compress --push --platform "${PLATFORMS}" .
+docker buildx build --no-cache -t "${REPO}/${IMAGE}:latest" --compress --push --platform "${PLATFORMS}" .
 
 # Get new versions
 docker pull "${REPO}/${IMAGE}:latest"
