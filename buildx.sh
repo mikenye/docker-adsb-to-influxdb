@@ -13,14 +13,14 @@ docker buildx use homecluster
 
 # Get previous versions
 docker pull "${REPO}/${IMAGE}:latest"
-docker run --entrypoint cat "${REPO}/${IMAGE}:latest" > "/tmp/${IMAGE}.oldlatest.VERSIONS"
+docker run --rm --entrypoint cat "${REPO}/${IMAGE}:latest" > "/tmp/${IMAGE}.oldlatest.VERSIONS"
 
 # Build & push latest
 docker buildx build --no-cache -t "${REPO}/${IMAGE}:latest" --compress --push --platform "${PLATFORMS}" .
 
 # Get new versions
 docker pull "${REPO}/${IMAGE}:latest"
-docker run --entrypoint cat "${REPO}/${IMAGE}:latest" > "/tmp/${IMAGE}.newlatest.VERSIONS"
+docker run --rm --entrypoint cat "${REPO}/${IMAGE}:latest" > "/tmp/${IMAGE}.newlatest.VERSIONS"
 
 # Check for version differences
 diff "/tmp/${IMAGE}.oldlatest.VERSIONS" "/tmp/${IMAGE}.newlatest.VERSIONS" > /dev/null
