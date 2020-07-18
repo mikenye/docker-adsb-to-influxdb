@@ -88,7 +88,7 @@ if [ -n "$MLATHOST" ]; then
 fi
 
 # Make sure influxdb is reachable
-if curl --location --fail "$INFLUXDBURL/ping"; then
+if curl --location --fail "$INFLUXDBURL/ping" > /dev/null 2>&1; then
     echo "InfluxDB is reachable at $INFLUXDBURL. HEALTHY"
 else
     echo "InfluxDB is not reachable at $INFLUXDBURL. UNHEALTHY"
