@@ -17,6 +17,7 @@ READSB_CMD+=("--net-json-port ${JSONPORT}")
 READSB_CMD+=(--write-json-globe-index)
 READSB_CMD+=("--json-trace-interval ${INTERVAL}")
 READSB_CMD+=("--net-connector=127.0.0.1,30013,json_out")
+READSB_CMD+=(--write-json=/run/readsb)
 
 # Run readsb
 "${READSB_BIN}" "${READSB_CMD[@]}" 2>&1 | awk -W Interactive '{print "[readsb] " $0}'
