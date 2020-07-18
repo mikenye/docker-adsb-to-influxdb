@@ -76,7 +76,10 @@ RUN set -x && \
     apt-get autoremove -y && \
     apt-get clean -y && \
     /usr/local/bin/telegraf --version >> /VERSIONS && \
-    timeout 3s /usr/local/bin/readsb --version 2>&1 | grep -i version >> /VERSIONS || true && \
+    # In the line below, the "timeout" and "|| true" are workarounds for weird readsb behaviour.
+    # readsb doesn't exit when running with "--version". I've let the author know and will remove
+    # this workaround when fixed.
+    echo "readsb $(timeout 3s /usr/local/bin/readsb --version 2>&1 | grep -i version)" >> /VERSIONS || true && \
     echo "debian version $(cat /etc/debian_version)" >> /VERSIONS && \
     date -I >> /BUILDDATE && \
     rm -rf /var/lib/apt/lists/* /src && \
