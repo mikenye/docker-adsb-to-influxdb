@@ -7,17 +7,17 @@ READSB_BIN="/usr/local/bin/readsb"
 READSB_CMD=(--net-only)
 READSB_CMD+=(--quiet)
 
-READSB_CMD+=(--net-connector=${ADSBHOST},${ADSBPORT},${ADSBTYPE})
+READSB_CMD+=("--net-connector=${ADSBHOST},${ADSBPORT},${ADSBTYPE}")
 
 if [ ! -z "${MLATHOST}" ]; then
-    READSB_CMD+=(--net-connector=${MLATHOST},${MLATPORT},beast_in)
+    READSB_CMD+=("--net-connector=${MLATHOST},${MLATPORT},beast_in")
 fi
 
 READSB_CMD+=(--stats-every=3600)
-READSB_CMD+=(--net-json-port ${JSONPORT})
+READSB_CMD+=("--net-json-port ${JSONPORT}")
 READSB_CMD+=(--write-json-globe-index)
-READSB_CMD+=(--json-trace-interval ${INTERVAL})
+READSB_CMD+=("--json-trace-interval ${INTERVAL}")
 
-READSB_CMD+=(--net-connector=127.0.0.1,30013,json_out)
+READSB_CMD+=("--net-connector=127.0.0.1,30013,json_out")
 
 "${READSB_BIN}" "${READSB_CMD[@]}" 2>&1 | awk -W Interactive '{print "[readsb] " $0}'
