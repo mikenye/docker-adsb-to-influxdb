@@ -9,7 +9,7 @@ READSB_CMD+=(--quiet)
 
 READSB_CMD+=("--net-connector=${ADSBHOST},${ADSBPORT},${ADSBTYPE}")
 
-if [ ! -z "${MLATHOST}" ]; then
+if [ -n "${MLATHOST}" ]; then
     READSB_CMD+=("--net-connector=${MLATHOST},${MLATPORT},beast_in")
 fi
 
