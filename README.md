@@ -167,7 +167,7 @@ See <https://github.com/wiedehopf/readsb/blob/master/README-json.md#aircraftjson
 
 Messages from a Mode S or ADS-B transponder, using a 24-bit ICAO address.
 
-#### Tags
+#### `adsb_icao` & `mlat` measurement Tags
 
 | Tag Name    | Example   | Detail |
 |-------------|-----------|--------|
@@ -180,7 +180,7 @@ Messages from a Mode S or ADS-B transponder, using a 24-bit ICAO address.
 | `sil_type`  | `perhour` | Frequency which SIL (Source Integrity Level) value is updated. |
 | `squawk`    | `4023`    | A 4-digit octal code assigned to the aircraft by air traffic control. |
 
-#### Fields
+#### `adsb_icao` & `mlat` measurement Fields
 
 | Field Name    | Example       | Units  | Detail |
 |---------------|---------------|--------|--------|
@@ -228,7 +228,7 @@ Messages from a Mode S or ADS-B transponder, using a 24-bit ICAO address.
 
 Messages from an ADS-B equipped "non-transponder" emitter e.g. a ground vehicle, using a 24-bit ICAO address.
 
-#### Tags
+#### `adsb_icao_nt` measurement Tags
 
 | Tag Name    | Example   | Detail |
 |-------------|-----------|--------|
@@ -237,7 +237,7 @@ Messages from an ADS-B equipped "non-transponder" emitter e.g. a ground vehicle,
 | `host`      | `a2i`     | Hostname of container (can specify with `--hostname`). |
 | `sil_type`  | `unknown` | Frequency which SIL (Source Integrity Level) value is updated. |
 
-#### Fields
+#### `adsb_icao_nt` measurement Fields
 
 | Field Name    | Example       | Units  | Detail |
 |---------------|---------------|--------|--------|
