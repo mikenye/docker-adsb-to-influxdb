@@ -3,6 +3,8 @@ set -e
 
 EXITCODE=0
 
+# ========== readsb is updating ==========
+
 if [ -f "/run/readsb/aircraft.json" ]; then
 
     # get latest timestamp of readsb json update
@@ -27,6 +29,8 @@ else
 
 fi
 
+# ========== DEATH COUNTS ==========
+
 # death count for telegraf
 # shellcheck disable=SC2126
 TELEGRAF_DEATHS=$(s6-svdt /run/s6/services/telegraf | grep -v "exitcode 0" | wc -l)
@@ -48,5 +52,39 @@ else
     echo "readsb deaths: $READSB_DEATHS. HEALTHY"
 fi
 s6-svdt-clear /run/s6/services/readsb
+
+# ========== NETWORK CONNECTIONS ==========
+
+# Make sure the local readsb has a connection to the ADSBHOST:ADSBPORT
+if netstat -anp | grep -E "tcp.*$(s6-dnsip4 $ADSBHOST):$ADSBPORT.*ESTABLISHED.*readsb" > /dev/null 2>&1; then
+    echo "local readsb is connected to $ADSBHOST:$ADSBPORT. HEALTHY"
+else
+    echo "local readsb is NOT connected to $ADSBHOST:$ADSBPORT. UNHEALTHY"
+    EXITCODE=1
+fi
+
+# Make sure the local readsb has a connection to telegraf
+if netstat -anp | grep -E "tcp.*127.0.0.1:30013.*127.0.0.1:.*ESTABLISHED.*telegraf" > /dev/null 2>&1; then
+    echo "local telegraf has a connection from local readsb. HEALTHY"
+else
+    echo "local telegraf DOES NOT have a connection from local readsb. UNHEALTHY"
+    EXITCODE=1
+fi
+if netstat -anp | grep -E "tcp.*127.0.0.1:.*127.0.0.1:30013.*ESTABLISHED.*readsb" > /dev/null 2>&1; then
+    echo "local readsb has a connection to local telegraf. HEALTHY"
+else
+    echo "local readsb DOES NOT have a connection to local telegraf. UNHEALTHY"
+    EXITCODE=1
+fi
+
+# If using MLATHOST, then make sure we have a connection
+if [ -n "$MLATHOST" ]; then 
+    if netstat -anp | grep -E "tcp.*$(s6-dnsip4 $MLATHOST):$MLATPORT.*ESTABLISHED.*readsb" > /dev/null 2>&1; then
+        echo "local readsb is connected to $MLATHOST:$MLATPORT. HEALTHY"
+    else
+        echo "local readsb is NOT connected to $MLATHOST:$MLATPORT. UHEALTHY"
+        EXITCODE=1
+    fi
+fi
 
 exit $EXITCODE
