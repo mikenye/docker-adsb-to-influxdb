@@ -56,11 +56,13 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN set -x && \
     apt-get update && \
     apt-get install --no-install-recommends -y \
+        bc \
         ca-certificates \
         curl \
         file \
         libncurses6 \
         gnupg \
+        jq \
         net-tools \
         procps \
         && \
