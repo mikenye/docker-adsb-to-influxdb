@@ -76,7 +76,7 @@ RUN set -x && \
     apt-get autoremove -y && \
     apt-get clean -y && \
     /usr/local/bin/telegraf --version >> /VERSIONS && \
-    /usr/local/bin/readsb --net-only --version >> /VERSIONS && \
+    timeout 3s /usr/local/bin/readsb --net-only --version | grep -i version >> /VERSIONS && \
     echo "debian version $(cat /etc/debian_version)" >> /VERSIONS && \
     date -I >> /BUILDDATE && \
     rm -rf /var/lib/apt/lists/* /src
