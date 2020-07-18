@@ -68,8 +68,6 @@ RUN set -x && \
         && \
     curl -s https://raw.githubusercontent.com/mikenye/deploy-s6-overlay/master/deploy-s6-overlay.sh | sh && \
     apt-get remove -y \
-        ca-certificates \
-        curl \
         file \
         gnupg \
         && \
