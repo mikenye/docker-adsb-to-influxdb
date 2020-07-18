@@ -87,4 +87,12 @@ if [ -n "$MLATHOST" ]; then
     fi
 fi
 
+# Make sure influxdb is reachable
+if curl --location --fail "$INFLUXDBURL/ping"; then
+    echo "InfluxDB is reachable at $INFLUXDBURL. HEALTHY"
+else
+    echo "InfluxDB is not reachable at $INFLUXDBURL. UNHEALTHY"
+    EXITCODE=1
+fi
+
 exit $EXITCODE
