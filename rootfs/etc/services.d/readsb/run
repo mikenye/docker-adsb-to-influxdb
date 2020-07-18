@@ -2,7 +2,9 @@
 # shellcheck shell=bash
 
 # Wait for telegraf
+echo "[readsb] Waiting for telegraf..."
 s6-svwait -U /run/s6/services/telegraf
+echo "[readsb] telegraf ready, launching."
 
 # Build the readsb command line based on options
 READSB_BIN="/usr/local/bin/readsb"
