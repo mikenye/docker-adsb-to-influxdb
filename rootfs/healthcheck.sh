@@ -56,7 +56,7 @@ s6-svdt-clear /run/s6/services/readsb
 # ========== NETWORK CONNECTIONS ==========
 
 # Make sure the local readsb has a connection to the ADSBHOST:ADSBPORT
-if netstat -anp | grep -E "tcp.*$(s6-dnsip4 $ADSBHOST):$ADSBPORT.*ESTABLISHED.*readsb" > /dev/null 2>&1; then
+if netstat -anp | grep -E "tcp.*$(s6-dnsip4 "$ADSBHOST"):$ADSBPORT.*ESTABLISHED.*readsb" > /dev/null 2>&1; then
     echo "local readsb is connected to $ADSBHOST:$ADSBPORT. HEALTHY"
 else
     echo "local readsb is NOT connected to $ADSBHOST:$ADSBPORT. UNHEALTHY"
@@ -79,7 +79,7 @@ fi
 
 # If using MLATHOST, then make sure we have a connection
 if [ -n "$MLATHOST" ]; then 
-    if netstat -anp | grep -E "tcp.*$(s6-dnsip4 $MLATHOST):$MLATPORT.*ESTABLISHED.*readsb" > /dev/null 2>&1; then
+    if netstat -anp | grep -E "tcp.*$(s6-dnsip4 "$MLATHOST"):$MLATPORT.*ESTABLISHED.*readsb" > /dev/null 2>&1; then
         echo "local readsb is connected to $MLATHOST:$MLATPORT. HEALTHY"
     else
         echo "local readsb is NOT connected to $MLATHOST:$MLATPORT. UHEALTHY"
