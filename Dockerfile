@@ -1,5 +1,9 @@
 FROM golang:1 AS telegraf_builder
 
+WORKDIR /src/telegraf
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 RUN set -x && \
     apt-get update && \
     apt-get install --no-install-recommends -y \
@@ -10,12 +14,15 @@ RUN set -x && \
       libc-dev \
       && \
     git clone https://github.com/influxdata/telegraf.git /src/telegraf && \
-    cd /src/telegraf && \
     export BRANCH_TELEGRAF=$(git tag --sort="-creatordate" | head -1) && \
     git checkout tags/${BRANCH_TELEGRAF} && \
     make
 
 FROM debian:stable-slim AS readsb_builder
+
+WORKDIR /src/readsb
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN set -x && \
     apt-get update && \
@@ -29,7 +36,6 @@ RUN set -x && \
         zlib1g-dev \
         && \
     git clone https://github.com/wiedehopf/readsb.git /src/readsb && \
-    cd /src/readsb && \
     make OPTIMIZE="-O3"
 
 FROM debian:stable-slim AS final
@@ -44,6 +50,8 @@ ENV ADSBPORT=30005 \
 COPY --from=telegraf_builder /src/telegraf/telegraf /usr/local/bin/telegraf
 COPY --from=readsb_builder /src/readsb/readsb /usr/local/bin/readsb
 COPY --from=readsb_builder /src/readsb/viewadsb /usr/local/bin/viewadsb
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN set -x && \
     apt-get update && \
