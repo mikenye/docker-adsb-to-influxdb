@@ -13,7 +13,7 @@ if [ -n "${MLATHOST}" ]; then
     READSB_CMD+=("--net-connector=${MLATHOST},${MLATPORT},beast_in")
 fi
 READSB_CMD+=(--stats-every=3600)
-READSB_CMD+=("--net-json-port ${JSONPORT}")
+READSB_CMD+=("--net-json-port=${JSONPORT}")
 READSB_CMD+=(--write-json-globe-index)
 READSB_CMD+=("--json-trace-interval ${INTERVAL}")
 READSB_CMD+=("--net-connector=127.0.0.1,30013,json_out")
