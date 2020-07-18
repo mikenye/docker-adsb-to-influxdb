@@ -13,13 +13,13 @@ if [ -z "${ADSBHOST+x}" ]; then
   EXITCODE=1
 fi
 if [ -z "${INFLUXDBUSERNAME+x}" ]; then
-  if [ ! -z "${INFLUXDBPASSWORD+x}" ]; then
+  if [ -n "${INFLUXDBPASSWORD+x}" ]; then
     echo "ERROR: Please also set environment variable INFLUXDBUSERNAME"
     EXITCODE=1
   fi
 fi
 if [ -z "${INFLUXDBPASSWORD+x}" ]; then
-  if [ ! -z "${INFLUXDBUSERNAME+x}" ]; then
+  if [ -n "${INFLUXDBUSERNAME+x}" ]; then
     echo "ERROR: Please also set environment variable INFLUXDBPASSWORD"
     EXITCODE=1
   fi

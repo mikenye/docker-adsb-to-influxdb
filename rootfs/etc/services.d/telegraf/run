@@ -3,8 +3,12 @@
 
 set -eo pipefail
 
-exec \
-  /usr/local/bin/telegraf \
-    --config /etc/telegraf/telegraf.conf \
-    --config-directory /etc/telegraf/telegraf.d \
-    2>&1 | awk -W interactive '{print "[telegraf] " $0}'
+s6-notifyoncheck \
+        -s 1000 \
+        -t 1000 \
+        -n 0 \
+        -c "/usr/local/bin/check_telegraf.sh" \
+        /usr/local/bin/telegraf \
+          --config /etc/telegraf/telegraf.conf \
+          --config-directory /etc/telegraf/telegraf.d \
+          2>&1 | awk -W interactive '{print "[telegraf] " $0}'
