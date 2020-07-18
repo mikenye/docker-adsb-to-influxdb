@@ -14,8 +14,8 @@ RUN set -x && \
       libc-dev \
       && \
     git clone https://github.com/influxdata/telegraf.git /src/telegraf && \
-    export BRANCH_TELEGRAF=$(git tag --sort="-creatordate" | head -1) && \
-    git checkout tags/${BRANCH_TELEGRAF} && \
+    BRANCH_TELEGRAF=$(git tag --sort="-creatordate" | head -1) && \
+    git checkout "tags/${BRANCH_TELEGRAF}" && \
     make
 
 FROM debian:stable-slim AS readsb_builder
