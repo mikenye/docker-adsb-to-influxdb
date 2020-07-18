@@ -79,7 +79,8 @@ RUN set -x && \
     timeout 3s /usr/local/bin/readsb --version 2>&1 | grep -i version >> /VERSIONS || true && \
     echo "debian version $(cat /etc/debian_version)" >> /VERSIONS && \
     date -I >> /BUILDDATE && \
-    rm -rf /var/lib/apt/lists/* /src
+    rm -rf /var/lib/apt/lists/* /src && \
+    cat /VERSIONS
 
 COPY /rootfs /
 
