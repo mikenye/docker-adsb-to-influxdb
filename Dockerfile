@@ -86,3 +86,6 @@ RUN set -x && \
 COPY /rootfs /
 
 ENTRYPOINT [ "/init" ]
+
+# Add healthcheck
+HEALTHCHECK --start-period=30s CMD /healthcheck.sh
