@@ -113,7 +113,6 @@ There are a series of available variables you are required to set:
 | `JSONPORT` | `30012` | Optional. The TCP port that `readsb` will listen to for incoming JSON connections. |
 | `TZ` | `UTC` | Optional.Your local timezone, eg `Australia/Perth`. |
 
-
 ## Ports
 
 No ports need to be mapped into this container. If you want to see the raw JSON data being sent to InfluxDB, you can map `JSONPORT` to the container, and connect using `telnet` or `nc`.
