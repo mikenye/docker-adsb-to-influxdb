@@ -4,19 +4,25 @@
 CONFIG_FILE="/etc/telegraf/telegraf.d/outputs_influxdb.conf"
 
 # Build telegraf config
-cat << EOF > ${CONFIG_FILE}
-[[outputs.influxdb]]
-EOF
+{
+  echo "[[outputs.influxdb]]"
 
-# Add InfluxDB URL
-echo -n 'urls = ["' >> ${CONFIG_FILE}
-echo -n "${INFLUXDBURL}" >> ${CONFIG_FILE}
-echo '"]' >> ${CONFIG_FILE}
+  # Add InfluxDB URL
+  echo " urls = [\"${INFLUXDBURL}\"]"
 
-# Finish config
-cat << EOF >> ${CONFIG_FILE}
-  database = "adsb"
-  skip_database_creation = false
-  timeout = "5s"
+  # Finish config
+  echo 'database = "adsb"'
+  echo 'skip_database_creation = false'
+  echo 'timeout = "5s"'
 
-EOF
+  # If set, add InfluxDB username
+  if [ -n "${INFLUXDBUSERNAME+x}" ]; then
+    echo "username = \"${INFLUXDBUSERNAME}\""
+  fi
+
+  # If set, add InfluxDB password
+  if [ -n "${INFLUXDBPASSWORD+x}" ]; then
+    echo "password = \"${INFLUXDBPASSWORD}\""
+  fi
+
+} > ${CONFIG_FILE}

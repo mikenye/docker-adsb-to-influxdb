@@ -1,5 +1,9 @@
 FROM golang:1 AS telegraf_builder
 
+WORKDIR /src/telegraf
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 RUN set -x && \
     apt-get update && \
     apt-get install --no-install-recommends -y \
@@ -10,12 +14,15 @@ RUN set -x && \
       libc-dev \
       && \
     git clone https://github.com/influxdata/telegraf.git /src/telegraf && \
-    cd /src/telegraf && \
-    export BRANCH_TELEGRAF=$(git tag --sort="-creatordate" | head -1) && \
-    git checkout tags/${BRANCH_TELEGRAF} && \
+    BRANCH_TELEGRAF=$(git tag --sort="-creatordate" | head -1) && \
+    git checkout "tags/${BRANCH_TELEGRAF}" && \
     make
 
 FROM debian:stable-slim AS readsb_builder
+
+WORKDIR /src/readsb
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN set -x && \
     apt-get update && \
@@ -29,8 +36,7 @@ RUN set -x && \
         zlib1g-dev \
         && \
     git clone https://github.com/wiedehopf/readsb.git /src/readsb && \
-    cd /src/readsb && \
-    make
+    make OPTIMIZE="-O3"
 
 FROM debian:stable-slim AS final
 
@@ -45,26 +51,41 @@ COPY --from=telegraf_builder /src/telegraf/telegraf /usr/local/bin/telegraf
 COPY --from=readsb_builder /src/readsb/readsb /usr/local/bin/readsb
 COPY --from=readsb_builder /src/readsb/viewadsb /usr/local/bin/viewadsb
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 RUN set -x && \
     apt-get update && \
     apt-get install --no-install-recommends -y \
+        bc \
         ca-certificates \
         curl \
+        file \
         libncurses6 \
         gnupg \
+        jq \
         net-tools \
         procps \
         && \
     curl -s https://raw.githubusercontent.com/mikenye/deploy-s6-overlay/master/deploy-s6-overlay.sh | sh && \
     apt-get remove -y \
-        ca-certificates \
-        curl \
+        file \
         gnupg \
         && \
     apt-get autoremove -y && \
     apt-get clean -y && \
-    rm -rf /var/lib/apt/lists/* /src
+    /usr/local/bin/telegraf --version >> /VERSIONS && \
+    # In the line below, the "timeout" and "|| true" are workarounds for weird readsb behaviour.
+    # readsb doesn't exit when running with "--version". I've let the author know and will remove
+    # this workaround when fixed.
+    echo "readsb $(timeout 3s /usr/local/bin/readsb --version 2>&1 | grep -i version)" >> /VERSIONS || true && \
+    echo "debian version $(cat /etc/debian_version)" >> /VERSIONS && \
+    date -I >> /BUILDDATE && \
+    rm -rf /var/lib/apt/lists/* /src && \
+    cat /VERSIONS
 
 COPY /rootfs /
 
 ENTRYPOINT [ "/init" ]
+
+# Add healthcheck
+HEALTHCHECK --start-period=30s CMD /healthcheck.sh
