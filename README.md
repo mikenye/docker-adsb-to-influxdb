@@ -62,7 +62,7 @@ docker run \
   -d \
   --name=adsb2influxdb \
   --restart=always \
-  -e INFLUXDB_URL="http://192.168.3.84:8086" \
+  -e INFLUXDBURL="http://192.168.3.84:8086" \
   -e ADSBHOST="192.168.3.85" \
   -e TZ="Australia/Perth" \
   mikenye/adsb-to-influxdb
@@ -131,7 +131,7 @@ It also makes it very easy to port this to any other backend that `telegraf` can
 
 ## InfluxDB retention policies
 
-By default, when Telegraf creates a database, it uses the default retention policy. At the time of writing, with InfluxDB version 1.7, this means the data is kept for *7 days* (168 hours).
+By default, when Telegraf creates a database, it uses the default retention policy. At the time of writing, with InfluxDB version 1.8, this means the data is kept *indefinitely* (0 seconds).
 
 ```
 InfluxDB shell version: 1.8.0
@@ -143,7 +143,7 @@ name    duration shardGroupDuration replicaN default
 autogen 0s       168h0m0s           1        true
 ```
 
-If you need a longer retention than this, you will need to modify the retention policy yourself. For example, if you wanted to keep the last 30 days of data:
+You should configure a retention policy to prevent your database from growing to consume all available disk space. Accordingly, you will need to modify the retention policy yourself. For example, if you wanted to keep the last 30 days of data:
 
 ```
 InfluxDB shell version: 1.8.0
