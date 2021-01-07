@@ -1,5 +1,9 @@
 # mikenye/adsb-to-influxdb
 
+Since creating this container, I've released: [mikenye/readsb-protobuf](https://github.com/mikenye/docker-readsb-protobuf). This container includes telegraf, and can export ADS-B data directly to InfluxDB, preventing the requirement (and performance overhead) of having to run an additional container for this function. I'd recommend using it if possible.
+
+---
+
 Pull ADS-B data from `dump1090`, `readsb` or another host that provides ADS-B data, and send to InfluxDB.
 
 Supported input formats:
@@ -49,6 +53,7 @@ docker run \
  -d \
  --name adsb2influxdb \
  --restart=always \
+ --tmpfs /run/readsb \
  -e INFLUXDBURL="http://<influxdb_host>:<influxdb_port>" \
  -e ADSBHOST="<readsb_host>" \
  -e TZ="<your_timezone>" \
@@ -62,6 +67,7 @@ docker run \
   -d \
   --name=adsb2influxdb \
   --restart=always \
+  --tmpfs /run/readsb \
   -e INFLUXDBURL="http://192.168.3.84:8086" \
   -e ADSBHOST="192.168.3.85" \
   -e TZ="Australia/Perth" \
@@ -85,6 +91,7 @@ services:
     tty: true
     container_name: adsb2influxdb
     restart: always
+    tmpfs: /run/readsb
     environment:
       - TZ="Australia/Perth"
       - INFLUXDBURL=http://192.168.3.84:8086
@@ -673,10 +680,3 @@ The JSON for this panel is as follows:
 Please feel free to [open an issue on the project's GitHub](https://github.com/mikenye/docker-adsb-to-influxdb/issues).
 
 I also have a [Discord channel](https://discord.gg/sTf9uYF), feel free to [join](https://discord.gg/sTf9uYF) and converse.
-
-## Changelog
-
-### 2020-06-07
-
-* Initial release.
-
